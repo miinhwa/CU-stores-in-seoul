@@ -1,0 +1,225 @@
+{
+  "stores": [
+    {
+      "id": 1,
+      "name": "CU 강남역점",
+      "address": "서울특별시 강남구 강남대로 396",
+      "road_address": "서울특별시 강남구 역삼동 737-8",
+      "phone": "02-1234-5678",
+      "latitude": 37.4979,
+      "longitude": 127.0276,
+      "district": "강남구",
+      "data_year": "2024"
+    },
+    {
+      "id": 2,
+      "name": "CU 홍대입구역점",
+      "address": "서울특별시 마포구 양화로 188",
+      "road_address": "서울특별시 마포구 서교동 395-5",
+      "phone": "02-2345-6789",
+      "latitude": 37.5563,
+      "longitude": 126.9236,
+      "district": "마포구",
+      "data_year": "2024"
+    },
+    {
+      "id": 3,
+      "name": "CU 명동점",
+      "address": "서울특별시 중구 명동길 26",
+      "road_address": "서울특별시 중구 명동2가 105-5",
+      "phone": "02-3456-7890",
+      "latitude": 37.5636,
+      "longitude": 126.9826,
+      "district": "중구",
+      "data_year": "2024"
+    },
+    {
+      "id": 4,
+      "name": "CU 건대입구역점",
+      "address": "서울특별시 광진구 아차산로 262",
+      "road_address": "서울특별시 광진구 화양동 5-1",
+      "phone": "02-4567-8901",
+      "latitude": 37.5407,
+      "longitude": 127.0692,
+      "district": "광진구",
+      "data_year": "2024"
+    },
+    {
+      "id": 5,
+      "name": "CU 신촌역점",
+      "address": "서울특별시 서대문구 신촌로 90",
+      "road_address": "서울특별시 서대문구 신촌동 134-1",
+      "phone": "02-5678-9012",
+      "latitude": 37.5551,
+      "longitude": 126.9368,
+      "district": "서대문구",
+      "data_year": "2024"
+    },
+    {
+      "id": 6,
+      "name": "CU 잠실역점",
+      "address": "서울특별시 송파구 올림픽로 300",
+      "road_address": "서울특별시 송파구 신천동 29",
+      "phone": "02-6789-0123",
+      "latitude": 37.5133,
+      "longitude": 127.1028,
+      "district": "송파구",
+      "data_year": "2024"
+    },
+    {
+      "id": 7,
+      "name": "CU 이태원점",
+      "address": "서울특별시 용산구 이태원로 177",
+      "road_address": "서울특별시 용산구 이태원동 126-3",
+      "phone": "02-7890-1234",
+      "latitude": 37.5347,
+      "longitude": 126.9947,
+      "district": "용산구",
+      "data_year": "2024"
+    },
+    {
+      "id": 8,
+      "name": "CU 종로3가점",
+      "address": "서울특별시 종로구 종로 69",
+      "road_address": "서울특별시 종로구 종로3가 1-1",
+      "phone": "02-8901-2345",
+      "latitude": 37.5707,
+      "longitude": 126.9910,
+      "district": "종로구",
+      "data_year": "2024"
+    },
+    {
+      "id": 9,
+      "name": "CU 신림역점",
+      "address": "서울특별시 관악구 신림로 340",
+      "road_address": "서울특별시 관악구 신림동 1422-1",
+      "phone": "02-9012-3456",
+      "latitude": 37.4842,
+      "longitude": 126.9295,
+      "district": "관악구",
+      "data_year": "2024"
+    },
+    {
+      "id": 10,
+      "name": "CU 노원역점",
+      "address": "서울특별시 노원구 동일로 1234",
+      "road_address": "서울특별시 노원구 상계동 1234-1",
+      "phone": "02-0123-4567",
+      "latitude": 37.6552,
+      "longitude": 127.0611,
+      "district": "노원구",
+      "data_year": "2024"
+    },
+    {
+      "id": 11,
+      "name": "CU 압구정점",
+      "address": "서울특별시 강남구 압구정로 200",
+      "road_address": "서울특별시 강남구 신사동 651-1",
+      "phone": "02-1111-2222",
+      "latitude": 37.5275,
+      "longitude": 127.0286,
+      "district": "강남구",
+      "data_year": "2024"
+    },
+    {
+      "id": 12,
+      "name": "CU 청담점",
+      "address": "서울특별시 강남구 도산대로 420",
+      "road_address": "서울특별시 강남구 청담동 123-5",
+      "phone": "02-2222-3333",
+      "latitude": 37.5194,
+      "longitude": 127.0473,
+      "district": "강남구",
+      "data_year": "2024"
+    },
+    {
+      "id": 13,
+      "name": "CU 신정네거리점",
+      "address": "서울특별시 양천구 신정로 123",
+      "road_address": "서울특별시 양천구 신정동 456-7",
+      "phone": "02-3333-4444",
+      "latitude": 37.5200,
+      "longitude": 126.8560,
+      "district": "양천구",
+      "data_year": "2024"
+    },
+    {
+      "id": 14,
+      "name": "CU 목동점",
+      "address": "서울특별시 양천구 목동로 456",
+      "road_address": "서울특별시 양천구 목동 789-1",
+      "phone": "02-4444-5555",
+      "latitude": 37.5264,
+      "longitude": 126.8752,
+      "district": "양천구",
+      "data_year": "2024"
+    },
+    {
+      "id": 15,
+      "name": "CU 여의도점",
+      "address": "서울특별시 영등포구 여의대로 123",
+      "road_address": "서울특별시 영등포구 여의도동 45-6",
+      "phone": "02-5555-6666",
+      "latitude": 37.5219,
+      "longitude": 126.9242,
+      "district": "영등포구",
+      "data_year": "2024"
+    },
+    {
+      "id": 16,
+      "name": "CU 구로디지털단지점",
+      "address": "서울특별시 구로구 디지털로 300",
+      "road_address": "서울특별시 구로구 구로동 123-4",
+      "phone": "02-6666-7777",
+      "latitude": 37.4852,
+      "longitude": 126.9014,
+      "district": "구로구",
+      "data_year": "2024"
+    },
+    {
+      "id": 17,
+      "name": "CU 금천구청점",
+      "address": "서울특별시 금천구 시흥대로 123",
+      "road_address": "서울특별시 금천구 시흥동 456-7",
+      "phone": "02-7777-8888",
+      "latitude": 37.4563,
+      "longitude": 126.8950,
+      "district": "금천구",
+      "data_year": "2024"
+    },
+    {
+      "id": 18,
+      "name": "CU 동대문점",
+      "address": "서울특별시 중구 을지로 281",
+      "road_address": "서울특별시 중구 을지로6가 18-21",
+      "phone": "02-8888-9999",
+      "latitude": 37.5663,
+      "longitude": 127.0097,
+      "district": "중구",
+      "data_year": "2024"
+    },
+    {
+      "id": 19,
+      "name": "CU 동대문구청점",
+      "address": "서울특별시 동대문구 용신동 123",
+      "road_address": "서울특별시 동대문구 용신동 456-7",
+      "phone": "02-9999-0000",
+      "latitude": 37.5744,
+      "longitude": 127.0396,
+      "district": "동대문구",
+      "data_year": "2024"
+    },
+    {
+      "id": 20,
+      "name": "CU 성북구청점",
+      "address": "서울특별시 성북구 보문로 168",
+      "road_address": "서울특별시 성북구 보문동 123-4",
+      "phone": "02-0000-1111",
+      "latitude": 37.5894,
+      "longitude": 127.0163,
+      "district": "성북구",
+      "data_year": "2024"
+    }
+  ]
+}
+

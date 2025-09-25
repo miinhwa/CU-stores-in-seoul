@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울 CU 매장 지도</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #ff6b6b;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 3px solid #ff6b6b;
+        }
+        
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .control-group select, .control-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .control-group select:focus, .control-group input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px solid #ecf0f1;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+        
+        .popup-content {
+            min-width: 250px;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        
+        .popup-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 8px;
+        }
+        
+        .popup-info {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .popup-info strong {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+        
+        .cu-icon {
+            background: #ff6b6b;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #c62828;
+            font-weight: 600;
+        }
+        
+        .district-filter {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .district-btn {
+            padding: 8px 12px;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .district-btn:hover {
+            border-color: #ff6b6b;
+            background: #fff5f5;
+        }
+        
+        .district-btn.active {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            #map {
+                height: 400px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .district-filter {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏪 서울 CU 매장 지도</h1>
+        <p>서울시 내 모든 CU 편의점 위치를 확인하세요</p>
+    </div>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="searchInput">매장 검색:</label>
+                <input type="text" id="searchInput" placeholder="매장명, 주소, 전화번호로 검색...">
+            </div>
+            
+            <div class="control-group">
+                <label>구/군 필터:</label>
+                <div class="district-filter" id="districtFilter">
+                    <button class="district-btn active" data-district="all">전체</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            <div id="loading" class="loading">매장 데이터를 불러오는 중...</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalStores">0</div>
+                <div class="stat-label">총 매장 수</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="visibleStores">0</div>
+                <div class="stat-label">표시된 매장</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="districtsCount">0</div>
+                <div class="stat-label">구/군 수</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    
+    <script>
+        // Global variables
+        let map;
+        let cuStores = [];
+        let markerGroup = L.layerGroup();
+        let currentFilter = 'all';
+        
+        // Seoul districts
+        const seoulDistricts = [
+            '강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구',
+            '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구',
+            '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'
+        ];
+        
+        // Initialize the map
+        const initMap = () => {
+            map = L.map('map').setView([37.5665, 126.9780], 11); // Seoul center
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Add marker group to map
+            map.addLayer(markerGroup);
+        };
+        
+        // Create CU icon
+        const createCUIcon = () => {
+            return L.divIcon({
+                className: 'cu-icon',
+                html: 'CU',
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+        };
+        
+        // Load CU stores data from external JSON
+        const loadCUStores = async () => {
+            try {
+                const response = await fetch('cu-seoul-stores.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                cuStores = data.stores;
+                console.log('CU stores loaded successfully:', cuStores.length);
+                
+                // Hide loading message
+                document.getElementById('loading').style.display = 'none';
+                
+                // Initialize map features
+                initializeMapFeatures();
+                
+            } catch (error) {
+                console.error('Error loading CU stores data:', error);
+                document.getElementById('loading').innerHTML = 
+                    `<div class="error">매장 데이터를 불러오는 중 오류가 발생했습니다: ${error.message}</div>`;
+            }
+        };
+        
+        // Initialize map features after data is loaded
+        const initializeMapFeatures = () => {
+            // Add markers to map
+            addMarkers();
+            
+            // Populate district filter
+            populateDistrictFilter();
+            
+            // Update statistics
+            updateStats();
+            
+            // Fit map to show all markers
+            if (cuStores.length > 0) {
+                const group = new L.featureGroup(markerGroup.getLayers());
+                map.fitBounds(group.getBounds().pad(0.1));
+            }
+        };
+        
+        // Add markers to map
+        const addMarkers = () => {
+            markerGroup.clearLayers();
+            
+            cuStores.forEach(store => {
+                const marker = L.marker([store.latitude, store.longitude], {
+                    icon: createCUIcon()
+                });
+                
+                // Create popup content
+                const popupContent = `
+                    <div class="popup-content">
+                        <div class="popup-title">${store.name}</div>
+                        <div class="popup-info"><strong>주소:</strong> ${store.address}</div>
+                        <div class="popup-info"><strong>도로명주소:</strong> ${store.road_address}</div>
+                        <div class="popup-info"><strong>전화번호:</strong> ${store.phone}</div>
+                        <div class="popup-info"><strong>구/군:</strong> ${store.district}</div>
+                        <div class="popup-info"><strong>데이터 연도:</strong> ${store.data_year}</div>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markerGroup.addLayer(marker);
+            });
+        };
+        
+        // Populate district filter
+        const populateDistrictFilter = () => {
+            const filterContainer = document.getElementById('districtFilter');
+            
+            // Add district buttons
+            seoulDistricts.forEach(district => {
+                const btn = document.createElement('button');
+                btn.className = 'district-btn';
+                btn.textContent = district;
+                btn.setAttribute('data-district', district);
+                btn.addEventListener('click', () => filterByDistrict(district));
+                filterContainer.appendChild(btn);
+            });
+        };
+        
+        // Filter markers by district
+        const filterByDistrict = (district) => {
+            currentFilter = district;
+            
+            // Update active button
+            document.querySelectorAll('.district-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-district="${district}"]`).classList.add('active');
+            
+            // Filter markers
+            markerGroup.clearLayers();
+            
+            const filteredStores = district === 'all' 
+                ? cuStores 
+                : cuStores.filter(store => store.district === district);
+            
+            filteredStores.forEach(store => {
+                const marker = L.marker([store.latitude, store.longitude], {
+                    icon: createCUIcon()
+                });
+                
+                const popupContent = `
+                    <div class="popup-content">
+                        <div class="popup-title">${store.name}</div>
+                        <div class="popup-info"><strong>주소:</strong> ${store.address}</div>
+                        <div class="popup-info"><strong>도로명주소:</strong> ${store.road_address}</div>
+                        <div class="popup-info"><strong>전화번호:</strong> ${store.phone}</div>
+                        <div class="popup-info"><strong>구/군:</strong> ${store.district}</div>
+                        <div class="popup-info"><strong>데이터 연도:</strong> ${store.data_year}</div>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markerGroup.addLayer(marker);
+            });
+            
+            updateStats();
+        };
+        
+        // Search functionality
+        const searchStores = (query) => {
+            const searchTerm = query.toLowerCase();
+            
+            markerGroup.clearLayers();
+            
+            const filteredStores = cuStores.filter(store => {
+                const matchesSearch = store.name.toLowerCase().includes(searchTerm) ||
+                                    store.address.toLowerCase().includes(searchTerm) ||
+                                    store.road_address.toLowerCase().includes(searchTerm) ||
+                                    store.phone.includes(searchTerm);
+                
+                const matchesDistrict = currentFilter === 'all' || store.district === currentFilter;
+                
+                return matchesSearch && matchesDistrict;
+            });
+            
+            filteredStores.forEach(store => {
+                const marker = L.marker([store.latitude, store.longitude], {
+                    icon: createCUIcon()
+                });
+                
+                const popupContent = `
+                    <div class="popup-content">
+                        <div class="popup-title">${store.name}</div>
+                        <div class="popup-info"><strong>주소:</strong> ${store.address}</div>
+                        <div class="popup-info"><strong>도로명주소:</strong> ${store.road_address}</div>
+                        <div class="popup-info"><strong>전화번호:</strong> ${store.phone}</div>
+                        <div class="popup-info"><strong>구/군:</strong> ${store.district}</div>
+                        <div class="popup-info"><strong>데이터 연도:</strong> ${store.data_year}</div>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markerGroup.addLayer(marker);
+            });
+            
+            updateStats();
+        };
+        
+        // Update statistics
+        const updateStats = () => {
+            const totalStores = cuStores.length;
+            const visibleStores = markerGroup.getLayers().length;
+            const districtsCount = new Set(cuStores.map(store => store.district)).size;
+            
+            document.getElementById('totalStores').textContent = totalStores;
+            document.getElementById('visibleStores').textContent = visibleStores;
+            document.getElementById('districtsCount').textContent = districtsCount;
+        };
+        
+        // Event listeners
+        const setupEventListeners = () => {
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchStores(e.target.value);
+            });
+        };
+        
+        // Initialize the application
+        const init = async () => {
+            initMap();
+            setupEventListeners();
+            await loadCUStores();
+        };
+        
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
+
